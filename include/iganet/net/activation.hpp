@@ -143,7 +143,7 @@ public:
        const std::string &key = "none") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::none))
       throw std::runtime_error("activation mismatch");
 
@@ -284,7 +284,7 @@ public:
        const std::string &key = "batch_norm") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::batch_norm))
       throw std::runtime_error("activation mismatch");
 
@@ -292,11 +292,11 @@ public:
     archive.read(key + ".running_var", this->running_var());
     archive.read(key + ".weight", this->options_.weight());
     archive.read(key + ".bias", this->options_.bias());
-    archive.read(key + ".eps", tensor);
+    archive.read(key + ".eps", tensor = torch::Tensor{});
     this->options_.eps(tensor.item<double>());
-    archive.read(key + ".momentum", tensor);
+    archive.read(key + ".momentum", tensor = torch::Tensor{});
     this->options_.momentum(tensor.item<double>());
-    archive.read(key + ".training", tensor);
+    archive.read(key + ".training", tensor = torch::Tensor{});
     this->options_.training(tensor.item<bool>());
 
     return archive;
@@ -381,13 +381,13 @@ public:
        const std::string &key = "celu") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::celu))
       throw std::runtime_error("activation mismatch");
 
-    archive.read(key + ".alpha", tensor);
+    archive.read(key + ".alpha", tensor = torch::Tensor{});
     this->options_.alpha(tensor.item<double>());
-    archive.read(key + ".inplace", tensor);
+    archive.read(key + ".inplace", tensor = torch::Tensor{});
     this->options_.inplace(tensor.item<bool>());
 
     return archive;
@@ -475,13 +475,13 @@ public:
        const std::string &key = "elu") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::elu))
       throw std::runtime_error("activation mismatch");
 
-    archive.read(key + ".alpha", tensor);
+    archive.read(key + ".alpha", tensor = torch::Tensor{});
     this->options_.alpha(tensor.item<double>());
-    archive.read(key + ".inplace", tensor);
+    archive.read(key + ".inplace", tensor = torch::Tensor{});
     this->options_.inplace(tensor.item<bool>());
 
     return archive;
@@ -542,7 +542,7 @@ public:
        const std::string &key = "gelu") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::gelu))
       throw std::runtime_error("activation mismatch");
 
@@ -623,11 +623,11 @@ public:
        const std::string &key = "glu") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::glu))
       throw std::runtime_error("activation mismatch");
 
-    archive.read(key + ".dim", tensor);
+    archive.read(key + ".dim", tensor = torch::Tensor{});
     this->options_.dim(tensor.item<int>());
 
     return archive;
@@ -725,13 +725,13 @@ public:
        const std::string &key = "group_norm") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::group_norm))
       throw std::runtime_error("activation mismatch");
 
     archive.read(key + ".weight", this->options_.weight());
     archive.read(key + ".bias", this->options_.bias());
-    archive.read(key + ".eps", tensor);
+    archive.read(key + ".eps", tensor = torch::Tensor{});
     this->options_.eps(tensor.item<double>());
 
     return archive;
@@ -818,16 +818,16 @@ public:
        const std::string &key = "gumbel_softmax") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() !=
         static_cast<int64_t>(activation::gumbel_softmax))
       throw std::runtime_error("activation mismatch");
 
-    archive.read(key + ".tau", tensor);
+    archive.read(key + ".tau", tensor = torch::Tensor{});
     this->options_.tau(tensor.item<double>());
-    archive.read(key + ".dim", tensor);
+    archive.read(key + ".dim", tensor = torch::Tensor{});
     this->options_.dim(tensor.item<int>());
-    archive.read(key + ".hard", tensor);
+    archive.read(key + ".hard", tensor = torch::Tensor{});
     this->options_.hard(tensor.item<bool>());
 
     return archive;
@@ -906,11 +906,11 @@ public:
        const std::string &key = "hardshrink") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::hardshrink))
       throw std::runtime_error("activation mismatch");
 
-    archive.read(key + ".lambda", tensor);
+    archive.read(key + ".lambda", tensor = torch::Tensor{});
     this->options_.lambda(tensor.item<double>());
 
     return archive;
@@ -975,7 +975,7 @@ public:
        const std::string &key = "hardsigmoid") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::hardsigmoid))
       throw std::runtime_error("activation mismatch");
 
@@ -1037,7 +1037,7 @@ public:
        const std::string &key = "hardswish") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::hardswish))
       throw std::runtime_error("activation mismatch");
 
@@ -1134,15 +1134,15 @@ public:
        const std::string &key = "hardtanh") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::hardtanh))
       throw std::runtime_error("activation mismatch");
 
-    archive.read(key + ".min_val", tensor);
+    archive.read(key + ".min_val", tensor = torch::Tensor{});
     this->options_.min_val(tensor.item<double>());
-    archive.read(key + ".max_val", tensor);
+    archive.read(key + ".max_val", tensor = torch::Tensor{});
     this->options_.max_val(tensor.item<double>());
-    archive.read(key + ".inplace", tensor);
+    archive.read(key + ".inplace", tensor = torch::Tensor{});
     this->options_.inplace(tensor.item<bool>());
 
     return archive;
@@ -1259,7 +1259,7 @@ public:
        const std::string &key = "instance_norm") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() !=
         static_cast<int64_t>(activation::instance_norm))
       throw std::runtime_error("activation mismatch");
@@ -1268,11 +1268,11 @@ public:
     archive.read(key + ".running_var", this->options_.running_var());
     archive.read(key + ".weight", this->options_.weight());
     archive.read(key + ".bias", this->options_.bias());
-    archive.read(key + ".eps", tensor);
+    archive.read(key + ".eps", tensor = torch::Tensor{});
     this->options_.eps(tensor.item<double>());
-    archive.read(key + ".momentum", tensor);
+    archive.read(key + ".momentum", tensor = torch::Tensor{});
     this->options_.momentum(tensor.item<double>());
-    archive.read(key + ".use_input_stats", tensor);
+    archive.read(key + ".use_input_stats", tensor = torch::Tensor{});
     this->options_.use_input_stats(tensor.item<bool>());
 
     return archive;
@@ -1374,13 +1374,13 @@ public:
        const std::string &key = "layer_norm") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::layer_norm))
       throw std::runtime_error("activation mismatch");
 
     archive.read(key + ".weight", this->options_.weight());
     archive.read(key + ".bias", this->options_.bias());
-    archive.read(key + ".eps", tensor);
+    archive.read(key + ".eps", tensor = torch::Tensor{});
     this->options_.eps(tensor.item<double>());
 
     return archive;
@@ -1472,13 +1472,13 @@ public:
        const std::string &key = "leaky_relu") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::leaky_relu))
       throw std::runtime_error("activation mismatch");
 
-    archive.read(key + ".negative_slope", tensor);
+    archive.read(key + ".negative_slope", tensor = torch::Tensor{});
     this->options_.negative_slope(tensor.item<double>());
-    archive.read(key + ".inplace", tensor);
+    archive.read(key + ".inplace", tensor = torch::Tensor{});
     this->options_.inplace(tensor.item<bool>());
 
     return archive;
@@ -1576,18 +1576,18 @@ public:
        const std::string &key = "local_response_norm") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() !=
         static_cast<int64_t>(activation::local_response_norm))
       throw std::runtime_error("activation mismatch");
 
-    archive.read(key + ".size", tensor);
+    archive.read(key + ".size", tensor = torch::Tensor{});
     this->options_.size(tensor.item<int64_t>());
-    archive.read(key + ".alpha", tensor);
+    archive.read(key + ".alpha", tensor = torch::Tensor{});
     this->options_.alpha(tensor.item<double>());
-    archive.read(key + ".beta", tensor);
+    archive.read(key + ".beta", tensor = torch::Tensor{});
     this->options_.beta(tensor.item<double>());
-    archive.read(key + ".k", tensor);
+    archive.read(key + ".k", tensor = torch::Tensor{});
     this->options_.k(tensor.item<double>());
 
     return archive;
@@ -1645,7 +1645,7 @@ public:
        const std::string &key = "logsigmoid") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::logsigmoid))
       throw std::runtime_error("activation mismatch");
 
@@ -1726,7 +1726,7 @@ public:
        const std::string &key = "logsoftmax") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::logsoftmax))
       throw std::runtime_error("activation mismatch");
 
@@ -1785,7 +1785,7 @@ public:
        const std::string &key = "mish") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::mish))
       throw std::runtime_error("activation mismatch");
 
@@ -1866,15 +1866,15 @@ public:
        const std::string &key = "normalize") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::normalize))
       throw std::runtime_error("activation mismatch");
 
-    archive.read(key + ".p", tensor);
+    archive.read(key + ".p", tensor = torch::Tensor{});
     this->options_.p(tensor.item<double>());
-    archive.read(key + ".eps", tensor);
+    archive.read(key + ".eps", tensor = torch::Tensor{});
     this->options_.eps(tensor.item<double>());
-    archive.read(key + ".dim", tensor);
+    archive.read(key + ".dim", tensor = torch::Tensor{});
     this->options_.dim(tensor.item<int64_t>());
 
     return archive;
@@ -1942,7 +1942,7 @@ public:
        const std::string &key = "prelu") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::prelu))
       throw std::runtime_error("activation mismatch");
 
@@ -2024,11 +2024,11 @@ public:
        const std::string &key = "relu") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::relu))
       throw std::runtime_error("activation mismatch");
 
-    archive.read(key + ".inplace", tensor);
+    archive.read(key + ".inplace", tensor = torch::Tensor{});
     this->options_.inplace(tensor.item<bool>());
 
     return archive;
@@ -2107,11 +2107,11 @@ public:
        const std::string &key = "relu6") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::relu6))
       throw std::runtime_error("activation mismatch");
 
-    archive.read(key + ".inplace", tensor);
+    archive.read(key + ".inplace", tensor = torch::Tensor{});
     this->options_.inplace(tensor.item<bool>());
 
     return archive;
@@ -2204,15 +2204,15 @@ public:
        const std::string &key = "rrelu") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::rrelu))
       throw std::runtime_error("activation mismatch");
 
-    archive.read(key + ".lower", tensor);
+    archive.read(key + ".lower", tensor = torch::Tensor{});
     this->options_.lower(tensor.item<double>());
-    archive.read(key + ".upper", tensor);
+    archive.read(key + ".upper", tensor = torch::Tensor{});
     this->options_.upper(tensor.item<double>());
-    archive.read(key + ".inplace", tensor);
+    archive.read(key + ".inplace", tensor = torch::Tensor{});
     this->options_.inplace(tensor.item<bool>());
 
     return archive;
@@ -2294,11 +2294,11 @@ public:
        const std::string &key = "selu") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::selu))
       throw std::runtime_error("activation mismatch");
 
-    archive.read(key + ".inplace", tensor);
+    archive.read(key + ".inplace", tensor = torch::Tensor{});
     this->options_.inplace(tensor.item<bool>());
 
     return archive;
@@ -2352,7 +2352,7 @@ public:
        const std::string &key = "sigmoid") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::sigmoid))
       throw std::runtime_error("activation mismatch");
 
@@ -2404,7 +2404,7 @@ public:
        const std::string &key = "silu") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::silu))
       throw std::runtime_error("activation mismatch");
 
@@ -2485,11 +2485,11 @@ public:
        const std::string &key = "softmax") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::softmax))
       throw std::runtime_error("activation mismatch");
 
-    archive.read(key + ".dim", tensor);
+    archive.read(key + ".dim", tensor = torch::Tensor{});
     this->options_.dim(tensor.item<int64_t>());
 
     return archive;
@@ -2570,11 +2570,11 @@ public:
        const std::string &key = "softmin") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::softmin))
       throw std::runtime_error("activation mismatch");
 
-    archive.read(key + ".dim", tensor);
+    archive.read(key + ".dim", tensor = torch::Tensor{});
     this->options_.dim(tensor.item<int64_t>());
 
     return archive;
@@ -2660,13 +2660,13 @@ public:
        const std::string &key = "softplus") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::softplus))
       throw std::runtime_error("activation mismatch");
 
-    archive.read(key + ".beta", tensor);
+    archive.read(key + ".beta", tensor = torch::Tensor{});
     this->options_.beta(tensor.item<double>());
-    archive.read(key + ".threshold", tensor);
+    archive.read(key + ".threshold", tensor = torch::Tensor{});
     this->options_.threshold(tensor.item<double>());
 
     return archive;
@@ -2753,11 +2753,11 @@ public:
        const std::string &key = "softshrink") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::softshrink))
       throw std::runtime_error("activation mismatch");
 
-    archive.read(key + ".lambda", tensor);
+    archive.read(key + ".lambda", tensor = torch::Tensor{});
     this->options_.lambda(tensor.item<double>());
 
     return archive;
@@ -2811,7 +2811,7 @@ public:
        const std::string &key = "softsign") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::softsign))
       throw std::runtime_error("activation mismatch");
 
@@ -2863,7 +2863,7 @@ public:
        const std::string &key = "tanh") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::tanh))
       throw std::runtime_error("activation mismatch");
 
@@ -2915,7 +2915,7 @@ public:
        const std::string &key = "tanhshrink") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::tanhshrink))
       throw std::runtime_error("activation mismatch");
 
@@ -3005,15 +3005,15 @@ public:
        const std::string &key = "threshold") override {
     torch::Tensor tensor;
 
-    archive.read(key + ".type", tensor);
+    archive.read(key + ".type", tensor = torch::Tensor{});
     if (tensor.item<int64_t>() != static_cast<int64_t>(activation::threshold))
       throw std::runtime_error("activation mismatch");
 
-    archive.read(key + ".threshold", tensor);
+    archive.read(key + ".threshold", tensor = torch::Tensor{});
     this->options_.threshold(tensor.item<double>());
-    archive.read(key + ".value", tensor);
+    archive.read(key + ".value", tensor = torch::Tensor{});
     this->options_.value(tensor.item<double>());
-    archive.read(key + ".inplace", tensor);
+    archive.read(key + ".inplace", tensor = torch::Tensor{});
     this->options_.inplace(tensor.item<bool>());
 
     return archive;
