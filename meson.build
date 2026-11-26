@@ -173,6 +173,7 @@ iganet_dep = declare_dependency(
   compile_args: iganet_defs,
   dependencies: iganet_deps,
   version: meson.project_version(),
+  variables: {'torch_libdir': torch_libdir},
 )
 meson.override_dependency('iganet', iganet_dep)
 meson.override_dependency('iganet-core', iganet_dep)
@@ -195,6 +196,7 @@ pkg.generate(
   version: meson.project_version(),
   url: 'https://github.com/iganets/iganet',
   requires: ['pugixml', 'nlohmann_json'],
+  variables: ['torch_libdir=' + torch_libdir],
   extra_cflags: [torch_abi, '-DJSON_HAS_RANGES=0'] + torch_def_args + torch_include_args,
   libraries: ['-L' + torch_libdir, '-Wl,-rpath,' + torch_libdir, '-ltorch', '-ltorch_cpu', '-lc10'],
 )
