@@ -18,6 +18,8 @@
 #include <exception>
 #include <filesystem>
 #include <functional>
+#include <iomanip>
+#include <limits>
 #include <regex>
 #include <string_view>
 
@@ -1913,11 +1915,11 @@ public:
       knots.append_attribute("degree") = degrees_[0];
 
       std::stringstream ss;
+      ss << std::setprecision(std::numeric_limits<real_t>::max_digits10);
       auto [knots_cpu, knots_accessor] =
           utils::to_tensorAccessor<real_t, 1>(knots_[0], torch::kCPU);
       for (int64_t i = 0; i < nknots_[0]; ++i)
-        ss << std::to_string(knots_accessor[i])
-           << (i < nknots_[0] - 1 ? " " : "");
+        ss << knots_accessor[i] << (i < nknots_[0] - 1 ? " " : "");
       knots.append_child(pugi::node_pcdata).set_value(ss.str().c_str());
     }
 
@@ -1951,11 +1953,11 @@ public:
         knots.append_attribute("degree") = degrees_[index];
 
         std::stringstream ss;
+        ss << std::setprecision(std::numeric_limits<real_t>::max_digits10);
         auto [knots_cpu, knots_accessor] =
             utils::to_tensorAccessor<real_t, 1>(knots_[index], torch::kCPU);
         for (int64_t i = 0; i < nknots_[index]; ++i)
-          ss << std::to_string(knots_accessor[i])
-             << (i < nknots_[index] - 1 ? " " : "");
+          ss << knots_accessor[i] << (i < nknots_[index] - 1 ? " " : "");
         knots.append_child(pugi::node_pcdata).set_value(ss.str().c_str());
       }
 
@@ -1968,15 +1970,16 @@ public:
     auto [coeffs_cpu, coeffs_accessors] =
         utils::to_tensorAccessor<real_t, 1>(coeffs_, torch::kCPU);
     std::stringstream ss;
+    ss << std::setprecision(std::numeric_limits<real_t>::max_digits10);
 
     if constexpr (parDim_ == 0) {
       for (short_t g = 0; g < geoDim_; ++g)
-        ss << std::to_string(coeffs_accessors[g][0]) << " ";
+        ss << coeffs_accessors[g][0] << " ";
 
     } else {
       for (int64_t i = 0; i < utils::prod(ncoeffs_); ++i)
         for (short_t g = 0; g < geoDim_; ++g)
-          ss << std::to_string(coeffs_accessors[g][i]) << " ";
+          ss << coeffs_accessors[g][i] << " ";
     }
 
     coefs.append_child(pugi::node_pcdata).set_value(ss.str().c_str());
