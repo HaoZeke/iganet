@@ -15,7 +15,9 @@
 #pragma once
 
 #include <filesystem>
+#include <random>
 #include <string_view>
+#include <thread>
 #include <unistd.h>
 
 #if defined(_WIN32)
@@ -123,8 +125,16 @@ public:
         break;
       }
 
-      // Write source code to file
-      std::string srcname = libdir + "lib" + name + hash + ".cxx";
+      // Several processes may compile the same library at once (test runners
+      // start executables in parallel). Each writes its source and its library
+      // under names of its own and renames the library into place, which is
+      // atomic on one file system: a process that finds libname finds a
+      // complete library.
+      const std::string unique =
+          "." + std::to_string(std::random_device{}()) + "." +
+          std::to_string(std::hash<std::thread::id>()(std::this_thread::get_id()));
+      std::string srcname = libdir + "lib" + name + hash + unique + ".cxx";
+      const std::string tmplib = libname + unique + ".tmp";
       std::ofstream srcfile(srcname.c_str());
 
       srcfile << includes << "\n\n"
@@ -142,10 +152,10 @@ public:
 #ifdef _WIN32
       // double quotes are better than single quotes..
       std::string syscall = "\"\"" + cmd + "\" " + flags + " \"" + srcname +
-                            "\" " + +out + "\"" + libname + "\"\"";
+                            "\" " + +out + "\"" + tmplib + "\"\"";
 #else
       std::string syscall = "\"" + cmd + "\" " + flags + " \"" + srcname +
-                            "\" " + out + "\"" + libname + "\"";
+                            "\" " + out + "\"" + tmplib + "\"";
 #endif
       const int status = std::system(syscall.c_str());
 
@@ -155,9 +165,19 @@ public:
       std::error_code cleanup_error;
       std::filesystem::remove(srcname, cleanup_error);
 
-      if (status != 0)
+      if (status != 0) {
+        std::filesystem::remove(tmplib, cleanup_error);
         throw std::runtime_error(
             "An error occurred while compiling the source code");
+      }
+
+      // Another process may have renamed its copy into place meanwhile; the
+      // two are built from the same source and flags, so either is fine.
+      std::error_code rename_error;
+      std::filesystem::rename(tmplib, libname, rename_error);
+      if (rename_error)
+        throw std::runtime_error("Unable to move " + tmplib + " to " +
+                                 libname + ": " + rename_error.message());
 
       if (cleanup_error)
         throw std::runtime_error("Unable to remove temporary source file " +
