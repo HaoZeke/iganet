@@ -3521,12 +3521,18 @@ public:
 
     utils::TensorArray<Base::parDim_> indices;
     for (short_t i = 0; i < Base::parDim_; ++i) {
-      auto nnz = Base::knots_[i].repeat({xi[i].numel(), 1}) >
-                 xi[i].flatten().view({-1, 1});
-      indices[i] =
-          torch::remainder(std::get<1>(((nnz.cumsum(1) == 1) & nnz).max(1)) - 1,
-                           Base::nknots_[i] - Base::degrees_[i] - 1)
-              .view(xi[i].sizes());
+      // Index of the first knot greater than each point, by binary search in
+      // the sorted knot vector.
+      // At the last knot no knot is greater; the index is then taken as 0,
+      // so that the remainder below maps it to the last knot span.
+      auto first = torch::searchsorted(Base::knots_[i].contiguous(),
+                                       xi[i].flatten().contiguous(),
+                                       /*out_int32=*/false, /*right=*/true);
+      first = torch::where(first == Base::nknots_[i],
+                           torch::zeros_like(first), first);
+      indices[i] = torch::remainder(first - 1, Base::nknots_[i] -
+                                                   Base::degrees_[i] - 1)
+                       .view(xi[i].sizes());
     }
     return indices;
   }
